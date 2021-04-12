@@ -36,8 +36,8 @@ def receive_message(client_socket):
     except:
         return False
 
-while True:
-    try:
+try:
+    while True:
 
     # Calls Unix select() system call or Windows select() WinSock call with three parameters:
     #   - rlist - sockets to be monitored for incoming data
@@ -81,7 +81,7 @@ while True:
 
                 client_name_list.append(clist)
 
-                print(client_name_list[0][0])
+                print(client_name_list)
 
         # Else existing socket is sending a message
             else:
@@ -100,6 +100,8 @@ while True:
                     del clients[notified_socket]
 
                     continue
+
+                    print(client_name_list[0])
 
             # Get user by notified socket, so we will know who sent the message
                 user = clients[notified_socket]
@@ -125,5 +127,7 @@ while True:
         # Remove from our list of users
             del clients[notified_socket]
 
-    except KeyboardInterrupt:
-        break
+            print(client_name_list[0])
+
+except KeyboardInterrupt:
+    server_socket.close()
