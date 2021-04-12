@@ -2,7 +2,7 @@ import socket
 import select
 import errno
 
-HEADER_LENGTH = 10
+HEADER_LENGTH = 10 
 
 IP = "192.168.240.65"
 PORT = 1234

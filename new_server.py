@@ -68,6 +68,7 @@ while True:
 
             # Add accepted socket to select.select() list
             sockets_list.append(client_socket)
+            print(sockets_list)
 
             # Also save username and username header
             clients[client_socket] = user
