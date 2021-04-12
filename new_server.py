@@ -1,5 +1,6 @@
 import socket
 import select
+import sys
 
 HEADER_LENGTH = 10
 
@@ -81,7 +82,11 @@ try:
 
                 client_name_list.append(clist)
 
-                print(client_name_list)
+                #print(client_name_list)
+
+                for client_name in client_name_list:
+                    #print(client_name)
+                    client_socket.send((str(client_name[0][0]) + ',' + str(client_name[0][1]) + ': ' + client_name[1]).encode('utf-8'))
 
         # Else existing socket is sending a message
             else:
@@ -100,8 +105,6 @@ try:
                     del clients[notified_socket]
 
                     continue
-
-                    print(client_name_list[0])
 
             # Get user by notified socket, so we will know who sent the message
                 user = clients[notified_socket]
