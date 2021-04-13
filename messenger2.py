@@ -36,7 +36,7 @@ class Receiver(threading.Thread):
                             break
 
                         elif not data:
-                            #print('\n')
+                            print('\n')
                             print(self.friend_user + full_message.strip())
                             #print('\n')
                             break
