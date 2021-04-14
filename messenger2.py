@@ -1,5 +1,7 @@
 import socket
 import threading
+import sqlite3
+from sqlite3 import Error
  
 ENCODING = 'utf-8'
 my_username = input("What is your username? ")
@@ -17,6 +19,22 @@ class Receiver(threading.Thread):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.bind((self.host, self.port))    
         sock.listen(10)
+
+        database = r"C:\sqlite\db\pythonsqlite.db"
+        con = sqlite3.connect(database)
+        connect = con.cursor()
+
+        users = '''CREATE TABLE chat_users_recv(
+            username text,
+            message text)'''
+
+        try:
+            connect.execute(users)
+
+        except Error as t:
+            print('')
+
+        sql = '''INSERT INTO chat_users_recv(username, message) VALUES(?,?)'''
 
         while True:
             connection, client_address = sock.accept()
@@ -38,7 +56,10 @@ class Receiver(threading.Thread):
                         elif not data:
                             print('\n')
                             print(self.friend_user + full_message.strip())
-                            #print('\n')
+                            print('--------------------------------\n')
+
+                            connect.execute(sql, (self.friend_user, full_message.strip()))
+                            con.commit()
                             break
             finally:
                 connection.shutdown(2)
@@ -62,9 +83,28 @@ class Sender(threading.Thread):
         self.user = my_username
  
     def run(self):
+        database = r"C:\sqlite\db\pythonsqlite.db"
+        con = sqlite3.connect(database)
+        connect = con.cursor()
+
+        users = '''CREATE TABLE chat_users_send(
+            username text,
+            message text)'''
+        try:
+            connect.execute(users)
+
+        except Error as t:
+            print('')
+
+        sql = '''INSERT INTO chat_users_send(username, message) VALUES(?,?)'''
+
         try:
             while True:
                 message = input(my_username + ": ")
+
+                connect.execute(sql, (my_username, message))
+                con.commit()
+
                 my_username2 = my_username + ": "
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 s.connect((self.host, self.port))
@@ -83,7 +123,7 @@ class Sender(threading.Thread):
         s.sendall(data)
  
 def main():
-    my_username = input("What is your username? ")
+    #my_username = input("What is your username? ")
     my_host = input("which is my host? ")
     my_port = int(input("which is my port? "))
     receiver = Receiver(my_host, my_port)
