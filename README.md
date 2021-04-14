@@ -18,5 +18,7 @@ How it works:
   
   These 2 databases should hold the same messages given that both users are online.
   
+  Please note that for the SQLite to work, the file path "C:\sqlite\db\" MUST exist.
+  
 
 
