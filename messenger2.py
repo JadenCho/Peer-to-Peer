@@ -2,6 +2,8 @@ import socket
 import threading
 import sqlite3
 from sqlite3 import Error
+import select
+import sys
  
 ENCODING = 'utf-8'
 my_username = input("What is your username? ")
@@ -123,7 +125,6 @@ class Sender(threading.Thread):
         s.sendall(data)
  
 def main():
-    #my_username = input("What is your username? ")
     my_host = input("which is my host? ")
     my_port = int(input("which is my port? "))
     receiver = Receiver(my_host, my_port)
