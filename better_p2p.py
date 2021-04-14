@@ -30,7 +30,7 @@ class Receiver(threading.Thread):
                     elif not data:
                         print('\n')
                         print("{}: {}".format(self.friend_user, full_message.strip()))
-                        print('\n')
+                        print('--------------------------------\n')
                         break
             finally:
                 connection.shutdown(2)
